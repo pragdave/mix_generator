@@ -11,7 +11,7 @@ defmodule MixGenerator.Mixfile do
 
   @description """
   This application adds a `gen` task to mix, which generates project trees. 
-  
+
   Unlike `mix new`, it can be fully customized. You can create private variants 
   for your own use, and publish public ones that can be shared.
   """
