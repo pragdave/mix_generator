@@ -6,7 +6,7 @@ defmodule MixGenerator.Mixfile do
   
   @deps [
     { :private,       ">= 0.0.0" },
-    { :mix_templates, path: "../mix_templates" }, #>= 0.0.0" },
+    { :mix_templates, ">= 0.0.0" },
     { :ex_doc,        ">= 0.0.0", only: :dev },
   ]
 
