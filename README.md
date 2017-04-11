@@ -8,8 +8,8 @@ to use.
 
 ### Install
 
-    $ mix archive.install mix_templates
-    $ mix archive.install mix_generator
+    $ mix archive.install hex mix_templates
+    $ mix archive.install hex mix_generator
     
 Then you can install templates using:
 

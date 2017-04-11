@@ -116,17 +116,21 @@ defmodule Mix.Tasks.Gen do
         
         template_module:         template_module,
         template_name:           template_name,
+
+        elixir_version:          System.version(),
+        erlang_version:          :erlang.system_info(:version),
+        otp_release:             :erlang.system_info(:otp_release),
       }
       |> template_module.populate_assigns(options)
     end
 
     
     defp find_template(name = <<".", _ :: binary>>) do
-      find_template_file(name)
+      find_local_template(name)
     end
     
     defp find_template(name = <<"/", _ :: binary>>) do
-      find_template_file(name)
+      find_local_template(name)
     end
     
     defp find_template(template_name) do
@@ -140,9 +144,8 @@ defmodule Mix.Tasks.Gen do
       end
     end
     
-    defp find_template_file(file_name) do
-      [{ module, _code }|_] =  Code.load_file(file_name)
-      find_template(module.name())
+    defp find_local_template(dir) do
+      MixTemplates.Cache.load_template_module(dir)
     end
     
     defp create_output(assigns) do
