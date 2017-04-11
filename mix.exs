@@ -2,7 +2,7 @@ defmodule MixGenerator.Mixfile do
   use Mix.Project
 
   @name    :mix_generator
-  @version "0.1.0"
+  @version "0.1.3"
   
   @deps [
     { :private,       ">= 0.0.0" },
