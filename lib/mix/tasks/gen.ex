@@ -27,14 +27,6 @@ defmodule Mix.Tasks.Gen do
       { :error, reason } ->
         error(reason)
     end
-      
-    # # 
-    # |> check_valid()
-    # # { options, names, assigns }
-    # |> populate_assigns_from_context(args)
-    # # %{ assigns }
-    # |> IO.inspect
-    # |> create_output
   end
 
   private do
@@ -113,6 +105,7 @@ defmodule Mix.Tasks.Gen do
         project_name:            project_name,
         project_name_camel_case: Macro.camelize(project_name),
         target_dir:              options.into,
+        in_umbrella?:            in_umbrella?(),
 
         target_subdir:           project_name,
         template_module:         template_module,
@@ -192,6 +185,21 @@ defmodule Mix.Tasks.Gen do
     defp list_local_templates() do
       Mix.Task.run("template", [])
     end
+
+    # stolen from mix/tasks/new.ex. 
+    defp in_umbrella? do
+      apps = Path.dirname(File.cwd!)
+      
+      try do
+        Mix.Project.in_project(:umbrella_check, "../..", fn _ ->
+          path = Mix.Project.config[:apps_path]
+          path && Path.expand(path) == apps
+        end)
+      catch
+        _, _ -> false
+      end
+    end
+    
   end
 
 end

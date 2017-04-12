@@ -2,12 +2,11 @@ defmodule MixGenerator.Mixfile do
   use Mix.Project
 
   @name    :mix_generator
-  @version "0.1.3"
+  @version "0.1.5"
   
   @deps [
     { :private,       ">= 0.0.0" },
-#    { :mix_templates, ">= 0.0.0" },
-    { :mix_templates, [ path: "../mix_templates" ]},
+    { :mix_templates, ">= 0.0.0" },
     { :ex_doc,        ">= 0.0.0", only: :dev },
   ]
 
