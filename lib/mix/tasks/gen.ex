@@ -113,7 +113,8 @@ defmodule Mix.Tasks.Gen do
         project_name:            project_name,
         project_name_camel_case: Macro.camelize(project_name),
         target_dir:              options.into,
-        
+
+        target_subdir:           project_name,
         template_module:         template_module,
         template_name:           template_name,
 
