@@ -2,11 +2,17 @@ defmodule MixGenerator.Mixfile do
   use Mix.Project
 
   @name    :mix_generator
-  @version "0.1.5"
+  @version "0.1.6"
+
+  @mix_templates (if (System.user_home == "/Users/dave") && (Mix.env != :prod) do
+    { :mix_templates, path: "../mix_templates" }
+  else
+    { :mix_templates, ">= 0.0.0" }
+  end)
   
   @deps [
+    @mix_templates,
     { :private,       ">= 0.0.0" },
-    { :mix_templates, ">= 0.0.0" },
     { :ex_doc,        ">= 0.0.0", only: :dev },
   ]
 

@@ -10,23 +10,13 @@ defmodule Mix.Tasks.Gen do
   alias MixTemplates.Cache
 
   @default_options %{
-    into: ".",
+    into:  ".",
+    force: false,
   }
   
   def run(args) do
-    case parse_command(args) do
-      :help ->
-        usage()
-        
-      :list ->
-        list_local_templates()
-        
-      { :project, project, name, args } ->
-        generate_project(project, name, args)
-
-      { :error, reason } ->
-        error(reason)
-    end
+    parse_command(args)
+    |> run_command
   end
 
   private do
@@ -89,14 +79,58 @@ defmodule Mix.Tasks.Gen do
     # mix gen project name #
     ########################
     
-    def generate_project(project, name, args) do
-      options = options_from_args(args)
-      assigns = global_assigns(options, project, name)
-      create_output(assigns)
+    def run_command( { :project, template_name, project_name, args }) do
+      find_template(template_name)
+      |> generate_project(template_name, project_name, args)
+    end
+
+    
+    ################
+    # mix gen list #
+    ################
+
+    def run_command(:list), do: list_local_templates()
+
+
+    ################
+    # mix gen help #
+    ################
+
+    def run_command(:help), do: usage()
+
+    
+    #########
+    # other #
+    #########
+
+    def run_command({ :error, reason }), do: error(reason)
+
+
+    ################################
+    # Helpers for generate_project #
+    ################################
+
+
+    defp generate_project(nil, template_name, _project_name, _args) do
+      error("Can't find template “#{template_name}”")
     end
     
-    defp global_assigns(options, template_name, project_name) do
-      template_module = find_template(template_name)
+    defp generate_project(template_module, template_name, project_name, args) do
+      args = maybe_invoke_based_on(template_module.based_on(),
+        template_name,
+        project_name,
+        args)
+
+      options = options_from_args(args)
+      assigns = global_assigns(options, template_module, project_name)
+      
+      create_output(assigns)
+      
+      template_module.clean_up(assigns)
+    end
+
+    
+    defp global_assigns(options, template_module, project_name) do
       %{
         host_os:                 Assigns.os_type(),
         now:                     Assigns.date_time_values(),
@@ -109,11 +143,13 @@ defmodule Mix.Tasks.Gen do
 
         target_subdir:           project_name,
         template_module:         template_module,
-        template_name:           template_name,
+        template_name:           template_module.name(),
 
         elixir_version:          System.version(),
         erlang_version:          :erlang.system_info(:version),
         otp_release:             :erlang.system_info(:otp_release),
+
+        force:                   options.force,
       }
       |> template_module.populate_assigns(options)
     end
@@ -156,6 +192,23 @@ defmodule Mix.Tasks.Gen do
     end
 
 
+    defp maybe_invoke_based_on(nil, _, _, args) do
+      args
+    end
+    
+    defp maybe_invoke_based_on(based_on_name, template_name, project_name, args) do
+      based_on_module = find_template(based_on_name)
+      if !based_on_module do
+        Mix.raise("""
+        Cannot find template “#{based_on_name}” 
+        This is needed by the template “#{template_name}”
+        """)
+      end
+      generate_project(based_on_module, based_on_name, project_name, args)
+      args ++ ["--force", "based_on"]
+    end
+    
+    
     ###########
     # Utility #
     ###########

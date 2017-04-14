@@ -1,0 +1,296 @@
+    <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.15.0">
+    <title>Mix.Gen.Template.Project – gen_template_project v0.1.7</title>
+    <link rel="stylesheet" href="dist/app-f7824c48e6.css" />
+    
+      <link rel="canonical" href="https://hexdocs.pm/gen_template_project/Mix.Gen.Template.Project.html" />
+    
+    <script src="dist/sidebar_items-481e944cee.js"></script>
+  </head>
+  <body data-type="modules">
+    <script>if(localStorage.getItem('night-mode')) document.body.className += ' night-mode';</script>
+
+    <div class="main">
+<button class="sidebar-toggle">
+  <i class="icon-menu"></i>
+</button>
+<section class="sidebar">
+
+  
+  <a href="api-reference.html" class="sidebar-projectLink">
+    <div class="sidebar-projectDetails">
+      <h1 class="sidebar-projectName">
+        gen_template_project
+      </h1>
+      <h2 class="sidebar-projectVersion">
+        v0.1.7
+      </h2>
+    </div>
+    
+  </a>
+
+  <div class="sidebar-search">
+    <i class="icon-search"></i>
+    <input type="text" class="sidebar-searchInput" placeholder="search" autocomplete="off" />
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+    
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+    
+
+    
+
+    
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+
+      <h1>
+        <small class="visible-xs">gen_template_project v0.1.7</small>
+        Mix.Gen.Template.Project
+        
+        
+      </h1>
+
+      
+        <section id="moduledoc">
+          <h1>Project: a new mix template for projects</h1>
+<p>This is an alternative for <code class="inline">mix new</code>, creating what I feel is an
+easier to read and maintain set of basic files.</p>
+<p>You use it in combination with the <code class="inline">mix gen</code> mix task, which you will need
+to install.</p>
+<h2 id="module-new-project-template" class="section-heading">
+  <a href="#module-new-project-template" class="hover-link"><i class="icon-link"></i></a>
+  New Project Template
+</h2>
+
+<pre><code class="elixir">    mix gen project «name» [ --into «path» ] [--sup[ervisor]] [--app[lication] «app»] [--module «module»]</code></pre>
+<h2 id="module-install" class="section-heading">
+  <a href="#module-install" class="hover-link"><i class="icon-link"></i></a>
+  Install
+</h2>
+
+<p>This template is installed using the <code class="inline">template.install</code> mix task.
+Projects are generated from it using the <code class="inline">mix gen</code> task.</p>
+<p>So, before using templates for the first time, you need to install these two tasks:</p>
+<pre><code class="elixir">$ mix archive.install mix_templates
+$ mix archive.install mix_generator</code></pre>
+<p>Then you can install this template using</p>
+<pre><code class="elixir">$ mix template.install gen_template_project</code></pre>
+<h2 id="module-use" class="section-heading">
+  <a href="#module-use" class="hover-link"><i class="icon-link"></i></a>
+  Use
+</h2>
+
+<p>To create a basic project, with no supervision and no application, run:</p>
+<pre><code class="elixir">$ mix gen project «project_name»</code></pre>
+<p><code class="inline">«project_name»</code> is both the name of the subdirectory that will hold the
+project and the name that will be given to the application. This
+affects entries in <code class="inline">mix.exs</code> as well as the names of the main
+file in <code class="inline">lib/</code> and the skeleton test in <code class="inline">test/</code>. The application
+module name will be the camelcase version of «name».</p>
+<p>By default the subdirectory will be created under your
+current directory; you can change this with the <code class="inline">--into</code> option:</p>
+<pre><code class="elixir">$ mix gen project «project_name» --into some/other/dir</code></pre>
+<h3>Variants</h3>
+<p>To create a project with a top-level supervisor contained in an
+application callback, use the <code class="inline">--sup</code> (or <code class="inline">--supervisor</code>) option. </p>
+<pre><code class="elixir">$ mix gen project «project_name» --sup</code></pre>
+<p>The application’s <code class="inline">start</code> function is created in
+<code class="inline">lib/«name»/application.ex</code>, along with a basic supervisor.</p>
+<p>You can change the name used for the application:</p>
+<pre><code class="elixir">$ mix gen project «project_name» --app[lication] «app»</code></pre>
+<p>The original «project_name» parameter will be the
+name used for the directory, and «app» will be used when
+creating file names in that directory and when customizing the
+file contents.</p>
+<p>Finally, you can override the name used for the application module:</p>
+<pre><code class="elixir">$ mix gen project «project_name» --module «Module»</code></pre>
+<p>«Module» must be a valid Elixir module name or alias.</p>
+<pre><code class="elixir"></code></pre>
+
+        </section>
+      
+
+      
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <i class="icon-link"></i>
+            </a>
+            Summary
+          </h1>
+          
+
+          
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#name/0">name()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Return the name of this template as an atom. This is
+the name passed to the gen command</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#populate_assigns/2">populate_assigns(assigns, options)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Override this function to process command line options and 
+set values passed into the template via <code class="inline">assigns</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#short_desc/0">short_desc()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Return the short description of this template, or nil</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#source_dir/0">source_dir()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Return the absolute path to the tree that is to be copied when
+instantiating this template. This top-level dir will typically
+just contain a directory called <code class="inline">$APP_NAME$</code></p>
+</div>
+  
+</div>
+
+  </div>
+
+
+          
+
+        </section>
+      
+
+      
+
+      
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <i class="icon-link"></i>
+            </a>
+            Functions
+          </h1>
+          <div class="detail" id="name/0">
+  
+  <div class="detail-header">
+    <a href="#name/0" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">name()</span>
+    
+    
+    
+  </div>
+  <section class="docstring">
+    <p>Return the name of this template as an atom. This is
+the name passed to the gen command.</p>
+
+  </section>
+</div>
+<div class="detail" id="populate_assigns/2">
+  
+  <div class="detail-header">
+    <a href="#populate_assigns/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">populate_assigns(assigns, options)</span>
+    
+    
+    
+  </div>
+  <section class="docstring">
+    <p>Override this function to process command line options and 
+set values passed into the template via <code class="inline">assigns</code>.</p>
+
+  </section>
+</div>
+<div class="detail" id="short_desc/0">
+  
+  <div class="detail-header">
+    <a href="#short_desc/0" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">short_desc()</span>
+    
+    
+    
+  </div>
+  <section class="docstring">
+    <p>Return the short description of this template, or nil.</p>
+
+  </section>
+</div>
+<div class="detail" id="source_dir/0">
+  
+  <div class="detail-header">
+    <a href="#source_dir/0" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">source_dir()</span>
+    
+    
+    
+  </div>
+  <section class="docstring">
+    <p>Return the absolute path to the tree that is to be copied when
+instantiating this template. This top-level dir will typically
+just contain a directory called <code class="inline">$APP_NAME$</code>.</p>
+
+  </section>
+</div>
+
+        </section>
+      
+
+      
+          <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.15.0),
+          </span>
+          <span class="line">
+            designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+            </span>
+        </p>
+        <button class="night-mode-toggle" />
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+  <script src="dist/app-372682077e.js"></script>
+  </body>
+</html>
+
