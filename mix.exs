@@ -4,7 +4,7 @@ defmodule MixGenerator.Mixfile do
   @name    :mix_generator
   @version "0.1.6"
 
-  @mix_templates (if (System.user_home == "/Users/dave") && (Mix.env != :prod) do
+  @mix_templates (if System.get_env("GEN_DEV") do
     { :mix_templates, path: "../mix_templates" }
   else
     { :mix_templates, ">= 0.0.0" }
