@@ -6,11 +6,11 @@ defmodule Child do
     name:       :child,
     short_desc: "Template for ....",
     source_dir: "../template",
-    based_on:   Path.join(__DIR__, "../../project")
+    based_on:   Path.join(__DIR__, "../../project"),
+    options:   [
+      name_of_child: [ to: :child_name ]
+    ]
 
-  def populate_assigns(assigns, options) do
-    Map.put(assigns, :child_name, options[:name_of_child])
-  end
 
   def clean_up(assigns) do
     File.rm!(Path.join([assigns.target_subdir, "lib", "#{assigns.project_name}.ex"]))

@@ -8,11 +8,17 @@ defmodule Mix.Tasks.Gen do
 
   alias MixTaskGen.Assigns
   alias MixTemplates.Cache
+  alias MixTaskGen.Options
+  
+  # @default_options %{
+  #   into:  ".",
+  #   force: false,
+  # }
 
-  @default_options %{
-    into:  ".",
-    force: false,
-  }
+  @base_option_specs [
+    into:  [ default: "."   ],
+    force: [ default: false ],
+  ]
   
   def run(args) do
     parse_command(args)
@@ -45,7 +51,7 @@ defmodule Mix.Tasks.Gen do
     end 
 
     def parse_command([ project, name | rest ]) do
-      { :project, project, name, rest }
+      { :new_project, project, name, rest }
     end
 
     def parse_command(other) do
@@ -60,10 +66,9 @@ defmodule Mix.Tasks.Gen do
           { _switches, other, _extra } ->
             error("unknown option “#{Enum.join(other, " ")}”")
         end
-      
+
       (extra ++ switches)
       |> Enum.map(&make_params_with_no_arg_true/1)
-      |> Enum.into(@default_options)
     end
     
     defp make_params_with_no_arg_true({param, nil}) do
@@ -79,7 +84,7 @@ defmodule Mix.Tasks.Gen do
     # mix gen project name #
     ########################
     
-    def run_command( { :project, template_name, project_name, args }) do
+    def run_command( { :new_project, template_name, project_name, args }) do
       find_template(template_name)
       |> generate_project(template_name, project_name, args)
     end
@@ -110,22 +115,41 @@ defmodule Mix.Tasks.Gen do
     # Helpers for generate_project #
     ################################
 
+    defp accumulate_specs(template) do
+      if parent_name = template.based_on() do
+        parent_module = find_template(parent_name)
+        template.options() ++ accumulate_specs(parent_module)
+      else
+        template.options() ++ @base_option_specs
+      end
+    end
+    
+    defp build_options(template, args) do
+      specs   = accumulate_specs(template)
+      Options.from_args(args, specs)
+    end
+    
 
     defp generate_project(nil, template_name, _project_name, _args) do
       error("Can't find template “#{template_name}”")
     end
     
     defp generate_project(template_module, template_name, project_name, args) do
-      args = maybe_invoke_based_on(template_module.based_on(),
+      normalized_args = options_from_args(args)
+      options = build_options(template_module, normalized_args)
+
+      generate_with_options(template_module, template_name, project_name, options)
+    end
+
+    defp generate_with_options(template_module, template_name, project_name, options) do
+      options = 
+        maybe_invoke_based_on(template_module.based_on(),
         template_name,
         project_name,
-        args)
+        options)
 
-      options = options_from_args(args)
       assigns = global_assigns(options, template_module, project_name)
-      
       create_output(assigns)
-      
       template_module.clean_up(assigns)
     end
 
@@ -151,7 +175,7 @@ defmodule Mix.Tasks.Gen do
 
         force:                   options.force,
       }
-      |> template_module.populate_assigns(options)
+      |> Map.merge(options)
     end
 
     
@@ -192,11 +216,11 @@ defmodule Mix.Tasks.Gen do
     end
 
 
-    defp maybe_invoke_based_on(nil, _, _, args) do
-      args
+    defp maybe_invoke_based_on(nil, _, _, options) do
+      options
     end
     
-    defp maybe_invoke_based_on(based_on_name, template_name, project_name, args) do
+    defp maybe_invoke_based_on(based_on_name, template_name, project_name, options) do
       based_on_module = find_template(based_on_name)
       if !based_on_module do
         Mix.raise("""
@@ -204,8 +228,8 @@ defmodule Mix.Tasks.Gen do
         This is needed by the template “#{template_name}”
         """)
       end
-      generate_project(based_on_module, based_on_name, project_name, args)
-      args ++ ["--force", "based_on"]
+      generate_with_options(based_on_module, based_on_name, project_name, options)
+      Map.put(options, :force, "based_on")
     end
     
     

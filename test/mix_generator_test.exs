@@ -96,10 +96,7 @@ defmodule MixGeneratorTest do
               assert_file(file, content)
             end)
 
-            IO.inspect File.ls!("lib")
             assert !File.exists?("lib/#{@project_name}.ex")
-
-            
          end})
   end  
 
