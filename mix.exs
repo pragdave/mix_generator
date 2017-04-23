@@ -7,7 +7,7 @@ defmodule MixGenerator.Mixfile do
   @mix_templates (if System.get_env("GEN_DEV") do
     { :mix_templates, path: "../mix_templates" }
   else
-    { :mix_templates, ">= 0.0.0" }
+    { :mix_templates, ">= 0.1.10" }
   end)
 
   @deps [
