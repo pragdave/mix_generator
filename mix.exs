@@ -2,14 +2,14 @@ defmodule MixGenerator.Mixfile do
   use Mix.Project
 
   @name    :mix_generator
-  @version "0.1.7"
+  @version "0.1.8"
 
   @mix_templates (if System.get_env("GEN_DEV") do
     { :mix_templates, path: "../mix_templates" }
   else
     { :mix_templates, ">= 0.0.0" }
   end)
-  
+
   @deps [
     @mix_templates,
     { :private,       ">= 0.0.0" },
@@ -17,14 +17,14 @@ defmodule MixGenerator.Mixfile do
   ]
 
   @description """
-  This application adds a `gen` task to mix, which generates project trees. 
+  This application adds a `gen` task to mix, which generates project trees.
 
-  Unlike `mix new`, it can be fully customized. You can create private variants 
+  Unlike `mix new`, it can be fully customized. You can create private variants
   for your own use, and publish public ones that can be shared.
   """
 
   ############################################################
-  
+
   def project do
     in_production = Mix.env == :prod
     [
@@ -55,5 +55,5 @@ defmodule MixGenerator.Mixfile do
       }
     ]
   end
-  
+
 end
