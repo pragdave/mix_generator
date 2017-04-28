@@ -6,7 +6,7 @@ defmodule Mix.Tasks.Gen do
 
   use Mix.Task
 
-  alias MixTaskGen.Assigns
+  alias MixTaskGen.{Assigns, Options}
   alias MixTemplates.{Cache, Specs}
 
   # @default_options %{
