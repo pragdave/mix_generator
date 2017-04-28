@@ -2,7 +2,7 @@ defmodule MixGenerator.Mixfile do
   use Mix.Project
 
   @name    :mix_generator
-  @version "0.1.8"
+  @version "0.1.9"
 
   @mix_templates (if System.get_env("GEN_DEV") do
     { :mix_templates, path: "../mix_templates" }

@@ -152,7 +152,7 @@ defmodule Mix.Tasks.Gen do
     end
 
     defp build_options(template, args) do
-      specs   = Specs.accumulate_specs(template)
+      specs   = Specs.accumulate_specs(template, @base_option_specs)
       Options.from_args(args, specs)
     end
 
