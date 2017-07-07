@@ -93,7 +93,7 @@ defmodule Mix.Tasks.Gen do
 
     def run_command( { :new_project, template_name, project_name, args }) do
       find_template(template_name)
-      |> generate_project(template_name, project_name, args)
+      |> generate_project(template_name, String.downcase(project_name), args)
     end
 
 

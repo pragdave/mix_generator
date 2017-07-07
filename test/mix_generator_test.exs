@@ -7,7 +7,7 @@ defmodule MixGeneratorTest do
   @child_template  Path.join(__DIR__, "../test_templates/child")
   @project_name    "cecil"
   @project_name_camel_case "Cecil"
-  
+
   test "basic project can be created" do
     in_tmp(%{
           setup: fn ->
@@ -23,12 +23,32 @@ defmodule MixGeneratorTest do
                 test/test_helper.exs
               }
               |> Enum.each(&assert_file/1)
-            
+
             assert_file("mix.exs", ~r/@name\s+:#{@project_name}/)
             assert_file("lib/#{@project_name}.ex", ~r/defmodule #{@project_name_camel_case}/)
           end})
   end
 
+  test "basic project can be created when name is capitalized" do
+    in_tmp(%{
+          setup: fn ->
+             Mix.Tasks.Gen.run([ @template, String.capitalize(@project_name) ])
+           end,
+          test: fn ->
+            ~w{ .gitignore
+                README.md
+                mix.exs
+                config/config.exs
+                lib/#{@project_name}.ex
+                test/#{@project_name}_test.exs
+                test/test_helper.exs
+              }
+              |> Enum.each(&assert_file/1)
+
+            assert_file("mix.exs", ~r/@name\s+:#{@project_name}/)
+            assert_file("lib/#{@project_name}.ex", ~r/defmodule #{@project_name_camel_case}/)
+          end})
+  end
 
   test "project with --sup can be created" do
     in_tmp(%{
@@ -66,7 +86,7 @@ defmodule MixGeneratorTest do
 
   # the child project is like project, but adds a file lib/child.ex, and removes
   # lib/#{project_name}.ex
-  
+
   test "template based on another can be created" do
     in_tmp(%{
           setup: fn ->
@@ -98,12 +118,12 @@ defmodule MixGeneratorTest do
 
             assert !File.exists?("lib/#{@project_name}.ex")
          end})
-  end  
+  end
 
   ############################################################
-  
+
   # stolen from mix/test/tasks/new
-  
+
   defp assert_file(file) do
     assert File.regular?(file), "Expected #{file} to exist, but does not"
   end
@@ -111,11 +131,11 @@ defmodule MixGeneratorTest do
   defp assert_file(file, matcher) when is_function(matcher, 1)  do
     assert_file(file)
     matcher.(File.read!(file))
-  end  
-  
+  end
+
   defp assert_file(file, match) do
     assert_file file, &(assert &1 =~ match)
-  end  
+  end
 
   def in_tmp(%{setup: setup, test: tests}) do
     System.tmp_dir!
@@ -126,9 +146,8 @@ defmodule MixGeneratorTest do
          File.cd!(@project_name, fn ->
            tests.()
          end)
-         File.rm_rf!(@project_name)      
+         File.rm_rf!(@project_name)
     end)
   end
-  
-  
+
 end
