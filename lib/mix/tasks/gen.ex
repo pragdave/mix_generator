@@ -170,6 +170,7 @@ defmodule Mix.Tasks.Gen do
         target_subdir:           project_name,
         template_module:         template_module,
         template_name:           template_module.name(),
+        copied_files:            template_module.copied_files() |> stringify_map_keys,
 
         elixir_version:          System.version(),
         erlang_version:          :erlang.system_info(:version),
@@ -265,6 +266,18 @@ defmodule Mix.Tasks.Gen do
       end
     end
 
-  end
+    defp stringify_map_keys(map) when is_map(map) do
+      result = map
+      |> Enum.map(fn {k, v} -> {stringify_if_atom(k), v} end)
+      |> Enum.into(%{})
+      IO.inspect result
+      result
+    end
+    defp stringify_map_keys(not_map), do: not_map
 
+    defp stringify_if_atom(atom) when is_atom(atom) do
+      Atom.to_string(atom)
+    end
+    defp stringify_if_atom(not_atom), do: not_atom
+  end
 end
