@@ -51,7 +51,7 @@ defmodule MixGenerator.Mixfile do
         "Apache 2 (see the file LICENSE.md for details)"
       ],
       links: %{
-        "GitHub" => "https://github.com/pragdave/mix_task_gen",
+        "GitHub" => "https://github.com/pragdave/mix_generator",
       }
     ]
   end
