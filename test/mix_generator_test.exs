@@ -120,6 +120,27 @@ defmodule MixGeneratorTest do
          end})
   end
 
+  test "template is not created if it's based on a template that fails to generate" do
+    in_tmp(%{
+          setup: fn ->
+             # simulate that the project dir already exists
+             # so that the based_on template gen fails
+             File.mkdir(@project_name)
+
+             assert_raise(Mix.Error, fn ->
+               Mix.Tasks.Gen.run([ @child_template, @project_name,
+                                   "--name_of_child", "cedric" ])
+             end)
+           end,
+          test: fn ->
+             # confirm that the setup prevented the based_on template from generating
+             assert !File.exists?("test/#{@project_name}_test.exs")
+
+             # assert that the child template did not generate
+             assert !File.exists?("lib/child.ex")
+         end})
+  end
+
   ############################################################
 
   # stolen from mix/test/tasks/new
