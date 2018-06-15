@@ -189,7 +189,9 @@ defmodule Mix.Tasks.Gen do
     defp create_output(assigns) do
       case MixTemplates.generate(assigns.template_module, assigns) do
         { :error, reason } ->
-          Mix.shell.info([ :red, "Error: ", :reset, reason ])
+          Mix.raise("""
+          Failed to create output for #{assigns.template_module} because #{reason}
+          """)
         :ok ->
           Mix.shell.info([ :green, "Successfully generated ",
                            :reset, assigns.project_name,
