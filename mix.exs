@@ -10,6 +10,10 @@ defmodule MixGenerator.Mixfile do
     { :mix_templates, ">= 0.1.10" }
   end)
 
+  @extra_applications [
+    :crypto,
+  ]
+
   @deps [
     @mix_templates,
     { :private,       ">= 0.0.0" },
@@ -36,6 +40,12 @@ defmodule MixGenerator.Mixfile do
       start_permanent: in_production,
       package:         package(),
       description:     @description,
+    ]
+  end
+
+  def application do
+    [
+      extra_applications: @extra_applications
     ]
   end
 

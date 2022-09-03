@@ -37,7 +37,7 @@ defmodule MixTaskGen.Options do
       |> Enum.reduce(%{}, &maybe_add_default/2)
     end
 
-    defp maybe_add_default(spec = {name, details}, options) do
+    defp maybe_add_default(spec = {_name, details}, options) do
       case Keyword.fetch(details, :default) do
         :error ->
           options

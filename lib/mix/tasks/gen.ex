@@ -67,7 +67,7 @@ defmodule Mix.Tasks.Gen do
 
     def options_from_args(args) do
       { switches, extra } =
-        case OptionParser.parse(args, []) do
+        case OptionParser.parse(args, switches: []) do
           { switches, [], extra } ->
             { switches, extra }
           { _switches, other, _extra } ->
@@ -227,9 +227,11 @@ defmodule Mix.Tasks.Gen do
     end
     defp error(message, nil) do
       Mix.shell.info([ :red, "ERROR: ", :reset, message ])
+      exit(:normal)
     end
     defp error(message, extras) do
       Mix.shell.info([ :red, message, :reset, extras ])
+      exit(:normal)
     end
 
     defp usage() do
@@ -242,10 +244,10 @@ defmodule Mix.Tasks.Gen do
       Mix.Task.run("template", [ template_name, "--help" ])
     end
 
-    defp list_local_templates(title) do
-      IO.puts("\n#{title}\n")
-      list_local_templates()
-    end
+    # defp list_local_templates(title) do
+    #   IO.puts("\n#{title}\n")
+    #   list_local_templates()
+    # end
 
     defp list_local_templates() do
       Mix.Task.run("template", [])

@@ -91,7 +91,7 @@ defmodule MixGeneratorTest do
     in_tmp(%{
           setup: fn ->
              Mix.Tasks.Gen.run([ @child_template, @project_name,
-                                 "--name_of_child", "cedric" ])
+                                 "--name-of-child", "cedric" ])
            end,
           test: fn ->
 
